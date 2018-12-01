@@ -1,0 +1,61 @@
+
+  insert into TB_HIST_COTACOES      (
+     TIPREG ,
+  DATA_pregao ,
+  CODBDI  ,
+  CODneg  ,
+  tpmerc ,
+  NOMRES ,
+  ESPECI ,
+  PRAZOT ,
+  MODREF ,
+  PREABE ,
+  PREMAX ,
+  PREMIN ,
+  PREMED ,
+  PREULT ,
+  PREOFC ,
+  PREOFV ,
+  TOTNEG ,
+  QUATOT ,
+  VOLTOT ,
+  PREEXE ,
+  INDOPC ,
+  DATVEN ,
+  FATCOT ,
+  PTOEXE ,
+  CODISI ,
+  DISMES )      
+   values(   
+   ?,   
+   ?,
+   ?,
+   ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?,
+  ?
+   )
+ 
+   
+    
+
+
