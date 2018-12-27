@@ -49,14 +49,14 @@ public class FramePrincipalAnalise extends JFrame {
 		setContentPane(contentPane);
 		
 		JPanel panel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
 		contentPane.add(panel, BorderLayout.NORTH);
+		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		
 		JLabel lblNewLabel = new JLabel("Arquivo");
 		panel.add(lblNewLabel);
+		txtArquivo.setText("C:\\Users\\Roterdam.hp\\Documents\\GitHub\\Eclipse_Projects\\Swing_Trader\\doc");
 		panel.add(txtArquivo);
-		txtArquivo.setColumns(40);
+		txtArquivo.setColumns(25);
 		
 		JPanel panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
@@ -65,7 +65,8 @@ public class FramePrincipalAnalise extends JFrame {
 		btnImportar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					new LinhaDao().importarArquivo(txtArquivo.getText());
+					importarDadosHistoricos();
+					//new LinhaDao().importarArquivo(txtArquivo.getText());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -75,17 +76,18 @@ public class FramePrincipalAnalise extends JFrame {
 		panel_1.add(btnImportar);
 
 		//TESTE
-		txtArquivo.setText(Utilitario.pathCorrente+"COTAHIST_A2018.TXT");
+		//txtArquivo.setText(Utilitario.pathCorrente+"COTAHIST_A2018.TXT");
 		//txtArquivo.setText(Utilitario.pathCorrente+"COTAHIST_A2018 - compacto.txt");
 		
+		
+	}
+	
+	private void importarDadosHistoricos(){
 		try {
 			new LinhaDao().importarArquivo(txtArquivo.getText());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 }

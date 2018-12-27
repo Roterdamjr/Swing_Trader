@@ -17,12 +17,12 @@ public class LinhaDao extends DaoBase{
 
 	public void importarArquivo(String arquivo) throws Exception{
 		
-		System.out.println("apagando");
+		System.out.println("Apagando dados de 2018");
 
-		PreparedStatement stmt1= connection.prepareStatement("delete from TB_HIST_COTACOES_final");
+		PreparedStatement stmt1= connection.prepareStatement("delete from TB_HIST_COTACOES_final where to_char(data_pregao,'yyyy')=2018");
 		stmt1.execute();
 		
-		System.out.println("preenchendo");
+		System.out.println("Importando dados de 2018");
 		
 		try {	
 			String query=Utilitario.lerTextoDeArquivo(Utilitario.pathCorrente+"queries/InsereLinhaFinal.sql");			    

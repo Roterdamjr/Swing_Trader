@@ -9,16 +9,15 @@ import java.util.List;
 import utilitarios.Utilitario;
 import dao.NegociacaoDao;
 
-public class Media {
-	private int periodo;
-	private String tipo;
+public class MediaAritimetica {
+	private int periodo;	
 	private Date dataReferencia;
 	private Acao acao;
 	
-	public Media(Acao acao,int periodo,  Date dataReferencia, String tipo) {
+	public MediaAritimetica(Acao acao,int periodo,  Date dataReferencia) {
 		super();
 		this.periodo = periodo;
-		this.tipo = tipo;
+
 		this.dataReferencia = dataReferencia;
 		this.acao = acao;
 	}
@@ -27,14 +26,15 @@ public class Media {
 		try {			 
 			List<Negociacao> negociacoesDaAcao = new NegociacaoDao().buscaNegociacaoPorAcao(new Acao("PETR4"));
 			
-			Media media=new Media(
+			MediaAritimetica media=new MediaAritimetica(
 					new Acao("PETR4"),
 					17,
-					Utilitario.converteStringParaDate("09/11/2018"),
-					null
+					Utilitario.converteStringParaDate("09/11/2018")
+				
 					);
 			
 			System.out.println(media.buscaValor());
+			//26.61
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class Media {
 			e.printStackTrace();
 		}
 
-		ordenarPorDataDecrescente(negociacoesDaAcao);
+		Negociacao.ordenarPorDataDecrescente(negociacoesDaAcao);
 		ArrayList<Integer>  lista=new ArrayList<Integer>();
 		
 		BigDecimal soma=new BigDecimal("0.00");
@@ -85,7 +85,7 @@ public class Media {
 	
 	public boolean isCrescente(){
 
-		BigDecimal valor1=new Media(
+/*		BigDecimal valor1=new Media(
 				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,4),null
 				).buscaValor();
 		
@@ -93,6 +93,10 @@ public class Media {
 				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,2),null
 				).buscaValor();
 				
+		BigDecimal valor3=buscaValor();*/
+		
+		BigDecimal valor1=buscaValorComOffset(4);
+		BigDecimal valor2=buscaValorComOffset(2);
 		BigDecimal valor3=buscaValor();
 
 		if(valor1.compareTo(valor2) < 0 && valor2.compareTo(valor3) < 0)
@@ -101,25 +105,12 @@ public class Media {
 			return false;
 	}
 	
-	
-	
-	public void ordenarPorDataCrescente(List<Negociacao> negociacoesDaAcao){
-		negociacoesDaAcao.sort(new Comparator<Negociacao>() {
-		    @Override
-		    public int compare(Negociacao o1, Negociacao o2) {
-		        return o1.getData().compareTo(o2.getData());
-		    }
-		});
+	public BigDecimal buscaValorComOffset(int offset){
+		return new MediaAritimetica(
+				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,offset)
+				).buscaValor();
 	}
-	
-	public void ordenarPorDataDecrescente(List<Negociacao> negociacoesDaAcao){
-		negociacoesDaAcao.sort(new Comparator<Negociacao>() {
-		    @Override
-		    public int compare(Negociacao o1, Negociacao o2) {
-		        return -o1.getData().compareTo(o2.getData());
-		    }
-		});
-	}	
+
 	
 	public Acao getAcao() {
 		return acao;
@@ -133,12 +124,7 @@ public class Media {
 	public void setPeriodo(int periodo) {
 		this.periodo = periodo;
 	}
-	public String getTipo() {
-		return tipo;
-	}
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+
 	public Date getDataReferencia() {
 		return dataReferencia;
 	}

@@ -29,7 +29,7 @@
    ?,   
    to_date(? ,'yyyymmdd'),
    ?,
-   ?,
+  trim(?),
   ?,
   ?,
   ?,

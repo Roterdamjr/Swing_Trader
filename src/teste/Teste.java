@@ -1,39 +1,49 @@
 package teste;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import modelo.Acao;
 import modelo.AcaoFactory;
-import modelo.Media;
-import modelo.Negociacao;
+import modelo.MediaAritimetica;
+import modelo.MediaExponencial;
+import service.Service;
 import utilitarios.Utilitario;
 
 public class Teste {
 	
 	public static void main(String[] args) {
+		MME(new Acao("PETR4"),10);	
+	}
+	
 
-		//teste(new Acao("AALL34"), "09/10/2018");
-
-		
-		
+	private static void mediaCrescente(){
+		//exibe acoes com media crescente
 		ArrayList<Acao> acoes= AcaoFactory.getInstance().buscaAcoes();
-		for(Acao ac:acoes){
-			teste(ac,"09/10/2018");
-		}
-		
+		for(Acao acao:acoes){
+			Date datareferencia=Utilitario.converteStringParaDate("09/10/2018");
 
+			MediaAritimetica m= new MediaAritimetica(acao,17,datareferencia);
+			//if( m.isCrescente()){
+				System.out.println(acao.getCodigoNegociacao() + ":  "+m.buscaValor()+ ":  "+ m.isCrescente());
+			//}
+		}
 	}
 
-	private static void teste(Acao acao, String dt){
-		Date datareferencia=Utilitario.converteStringParaDate(dt);
-
-		Media m= new Media(acao,17,datareferencia,null);
-		if(acao.getCodigoNegociacao().equals("ABCB4")){
-			System.out.println(acao.getCodigoNegociacao() + ",  "+ m.isCrescente());
+	private static void cruzamentoDeMedias(){
+		
+	
+	}
+	
+	private static void MME(Acao acao,int numeroDePeriodos){
+		Service serv=new Service();
+		List<MediaExponencial>medias=serv.buscaValores(acao, numeroDePeriodos);
+		for(MediaExponencial media:medias){
+			
+			System.out.println( media.getValor());
 		}
-		System.out.println(acao.getCodigoNegociacao() + ",  "+ m.isCrescente());
+		
 	}
 	
 }

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.List;
 
 import dao.NegociacaoDao;
 
@@ -70,6 +71,23 @@ public class Negociacao {
 		
 	}
 	
+	public static void ordenarPorDataCrescente(List<Negociacao> negociacoesDaAcao){
+		negociacoesDaAcao.sort(new Comparator<Negociacao>() {
+		    @Override
+		    public int compare(Negociacao o1, Negociacao o2) {
+		        return o1.getData().compareTo(o2.getData());
+		    }
+		});
+	}
+	
+	public static void ordenarPorDataDecrescente(List<Negociacao> negociacoesDaAcao){
+		negociacoesDaAcao.sort(new Comparator<Negociacao>() {
+		    @Override
+		    public int compare(Negociacao o1, Negociacao o2) {
+		        return -o1.getData().compareTo(o2.getData());
+		    }
+		});
+	}	
 	
 	public Date getData() {
 		return data;
