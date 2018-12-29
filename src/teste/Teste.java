@@ -2,19 +2,19 @@ package teste;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import modelo.Acao;
 import modelo.AcaoFactory;
 import modelo.MediaAritimetica;
 import modelo.MediaExponencial;
+import modelo.MediaPontual;
 import service.Service;
 import utilitarios.Utilitario;
 
 public class Teste {
 	
 	public static void main(String[] args) {
-		MME(new Acao("PETR4"),10);	
+		MME(new Acao("PETR4"),72);	
 	}
 	
 
@@ -31,19 +31,17 @@ public class Teste {
 		}
 	}
 
-	private static void cruzamentoDeMedias(){
-		
-	
-	}
 	
 	private static void MME(Acao acao,int numeroDePeriodos){
 		Service serv=new Service();
-		List<MediaExponencial>medias=serv.buscaValores(acao, numeroDePeriodos);
-		for(MediaExponencial media:medias){
-			
-			System.out.println( media.getValor());
+		MediaExponencial me=new MediaExponencial(acao,72);
+		//List<MediaPontual>medias=serv.buscaValores(acao, numeroDePeriodos);
+		//new MediaExponencial("PETR4"),72r)
+		for(MediaPontual media:me.getMedias()){			
+			System.out.println(media.getDataReferencia()+",  "+ media.getValor());
 		}
-		
+
+	
 	}
 	
 }
