@@ -3,18 +3,23 @@ package teste;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import dao.NegociacaoDao;
 import modelo.Acao;
 import modelo.AcaoFactory;
+import modelo.DataDeNegociacaoFactory;
 import modelo.MediaAritimetica;
 import modelo.MediaExponencial;
+import modelo.Negociacao;
 import modelo.ValorData;
+import service.service;
 import utilitarios.Utilitario;
 
 public class Teste {
 	
 	public static void main(String[] args) {
-		MME(new Acao("PETR4"),10);	
+		MME(new Acao("KROT3"));	
 		
 	}
 	
@@ -32,15 +37,8 @@ public class Teste {
 		}
 	}
 	
-	private static void MME(Acao acao,int numeroDePeriodos){
-		MediaExponencial me=new MediaExponencial(acao,numeroDePeriodos);	
-		for(ValorData media:me.getMedias()){			
-			System.out.println(media.getDataReferencia()+",  "+ media.getValor());
-		}
-
-		//media: data: 2018-10-30  valor:22.08   data: 2018-10-26  valor:21.80   data: 2018-10-24  valor:21.51 
-	
-		//System.out.println(me.isCrescente(Utilitario.converteStringParaDate("16/08/2018")));
+	private static void MME(Acao acao){
+				new service().difusorFluxo(acao);
 	}
 	
 }

@@ -10,44 +10,27 @@ import dao.NegociacaoDao;
 
 public class MediaExponencial {
 
-	Acao acao;
 	int periodo;	
 	List<ValorData> medias;
+	List<ValorData> valores;
 	
-	
-	public MediaExponencial(Acao acao, int periodo) {
+	public MediaExponencial (int periodo,List<ValorData> vals) {
 		super();
-		this.acao = acao;
-		this.periodo = periodo;
-		medias=getMedias();
+		this.periodo = periodo;		
+		this.valores=vals;
+		calculaMedias();
 	}
-
-	public List<ValorData> getMedias() {
+	
+	private void calculaMedias(){		
+	
 		List<ValorData> medias=new ArrayList<ValorData>();
-		
-		/*
-		 * busca negociacoes em ordem crescente
-		 * */
-		List<Negociacao> negociacoes=null;
-		try {
-			negociacoes = new NegociacaoDao().buscaNegociacaoPorAcao(acao);			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		Negociacao.ordenarPorDataCrescente(negociacoes);
-		
-		//carrrega valores de negociacoes
-		List<ValorData> valores=new ArrayList<ValorData>();
-		for(Negociacao n:negociacoes){
-			valores.add( new ValorData(n.getData(),n.getPrecoUltimo()));
-		}
-		/*fim busca negociacoes*/
-		
-		
-		
-		/*
-		 * calcula médias
-		 * */		
+		//ordena
+		valores.sort(new Comparator<ValorData>() {
+		    @Override
+		    public int compare(ValorData o1, ValorData o2) {
+		        return o1.getDataReferencia().compareTo(o2.getDataReferencia());
+		    }
+		});
 		
 		BigDecimal total=new BigDecimal(0),valor=null,valorAnterior=null;
 		int i=1;		
@@ -78,10 +61,9 @@ public class MediaExponencial {
 			}
 
 			i++;
-
 		}	
 
-		return medias;
+		this.medias=medias;
 	}
 
 	public boolean isCrescente(Date dataReferencia){
@@ -139,25 +121,22 @@ public class MediaExponencial {
 		});
 		System.out.println("fim ordenando");
 	}
-	
-	public Acao getAcao() {
-		return acao;
-	}
 
-	public void setAcao(Acao acao) {
-		this.acao = acao;
+	public void exibirMedias(){
+		for(ValorData vd:medias){
+			System.out.println("Data: " +vd.getDataReferencia()+ "Valor: "+vd.getValor());
+		}
 	}
 
 	public int getPeriodo() {
 		return periodo;
 	}
-
 	public void setPeriodo(int periodo) {
 		this.periodo = periodo;
 	}
-
-	
-
+	public List<ValorData> getMedias() {
+		return medias;
+	}
 	public void setMedias(List<ValorData> medias) {
 		this.medias = medias;
 	}
