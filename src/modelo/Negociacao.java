@@ -32,7 +32,7 @@ public class Negociacao {
 	}
 
 	public static ArrayList<Date> buscaDatasDeNegociacao(boolean ordemCrescente) {
-		ArrayList<Date> lista= DataDeNegociacaoFactory.getInstance().buscaDatasDeNegociacao();
+		ArrayList<Date> lista= DataDeNegociacaoFactory.getDatasDeNegociacao();
 		
 		if(!ordemCrescente){
 			lista.sort(new Comparator<Date>() {
@@ -42,7 +42,7 @@ public class Negociacao {
 			    }
 			});
 		}
-		
+
 		return lista;
 	}
 

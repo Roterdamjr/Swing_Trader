@@ -7,18 +7,25 @@ import java.util.List;
 
 import dao.NegociacaoDao;
 
-public class MediaPontual {
+public class ValorData {
 
 	private Date dataReferencia;
 	private BigDecimal valor;
-	Acao acao;
-	int periodo;
 	
-	public MediaPontual(Date dataReferencia, BigDecimal valor) {
+	public ValorData(Date dataReferencia, BigDecimal valor) {
 		super();
 		this.dataReferencia = dataReferencia;
 		this.valor = valor;
 	}	
+	
+	public int comparar(ValorData mp){
+		return  valor.compareTo(mp.getValor());
+				
+	}
+	
+	public String toString(){
+		return ("data: "+ getDataReferencia()+ "  valor:"+getValor());
+	}
 	
 	public Date getDataReferencia() {
 		return dataReferencia;
@@ -33,26 +40,6 @@ public class MediaPontual {
 		this.valor = valor;
 	}
 
-	public Acao getAcao() {
-		return acao;
-	}
-
-	public void setAcao(Acao acao) {
-		this.acao = acao;
-	}
-
-	public int getPeriodo() {
-		return periodo;
-	}
-
-	public void setPeriodo(int periodo) {
-		this.periodo = periodo;
-	}
-
-	
-
-
-	
 
 	
 }

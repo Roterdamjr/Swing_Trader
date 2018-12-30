@@ -8,16 +8,20 @@ import dao.NegociacaoDao;
 public class DataDeNegociacaoFactory {
 	 
 	private static DataDeNegociacaoFactory uniqueInstance = new DataDeNegociacaoFactory();
-	 
+	private static ArrayList<Date> datasDeNegociacao=buscaDatasDeNegociacao();
+	
 	private DataDeNegociacaoFactory() {
 	  }
 	 
 	public static DataDeNegociacaoFactory getInstance() {
 	     return uniqueInstance;
 	}
+
+	public static ArrayList<Date> getDatasDeNegociacao() {
+		return datasDeNegociacao;
+	}
 	
-	public ArrayList<Date> buscaDatasDeNegociacao() {
-		ArrayList<Date> datasDeNegociacao=new ArrayList<Date>();
+	private static ArrayList<Date> buscaDatasDeNegociacao() {
 		
 		try {
 			datasDeNegociacao=new NegociacaoDao().buscaDatasaDeNegociacao();
@@ -27,4 +31,6 @@ public class DataDeNegociacaoFactory {
 		}
 		return datasDeNegociacao;
 	}
+	
+	
 }

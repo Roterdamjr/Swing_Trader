@@ -1,5 +1,6 @@
 package teste;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,14 +8,14 @@ import modelo.Acao;
 import modelo.AcaoFactory;
 import modelo.MediaAritimetica;
 import modelo.MediaExponencial;
-import modelo.MediaPontual;
-import service.Service;
+import modelo.ValorData;
 import utilitarios.Utilitario;
 
 public class Teste {
 	
 	public static void main(String[] args) {
-		MME(new Acao("PETR4"),72);	
+		MME(new Acao("PETR4"),10);	
+		
 	}
 	
 
@@ -30,18 +31,16 @@ public class Teste {
 			//}
 		}
 	}
-
 	
 	private static void MME(Acao acao,int numeroDePeriodos){
-		Service serv=new Service();
-		MediaExponencial me=new MediaExponencial(acao,72);
-		//List<MediaPontual>medias=serv.buscaValores(acao, numeroDePeriodos);
-		//new MediaExponencial("PETR4"),72r)
-		for(MediaPontual media:me.getMedias()){			
+		MediaExponencial me=new MediaExponencial(acao,numeroDePeriodos);	
+		for(ValorData media:me.getMedias()){			
 			System.out.println(media.getDataReferencia()+",  "+ media.getValor());
 		}
 
+		//media: data: 2018-10-30  valor:22.08   data: 2018-10-26  valor:21.80   data: 2018-10-24  valor:21.51 
 	
+		//System.out.println(me.isCrescente(Utilitario.converteStringParaDate("16/08/2018")));
 	}
 	
 }
