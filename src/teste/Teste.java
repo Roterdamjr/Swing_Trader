@@ -19,7 +19,7 @@ import utilitarios.Utilitario;
 public class Teste {
 	
 	public static void main(String[] args) {
-		MME(new Acao("KROT3"));	
+		MME(new Acao("BBAS3"));	
 		
 	}
 	
@@ -38,7 +38,7 @@ public class Teste {
 	}
 	
 	private static void MME(Acao acao){
-				new service().difusorFluxo(acao);
+		new service().difusorFluxo(acao);
 	}
 	
 }

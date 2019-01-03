@@ -1,6 +1,6 @@
 package service;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,29 +27,35 @@ public class service {
 		
 		List<ValorData> valores=new ArrayList<ValorData>();
 		for(Negociacao n:negociacoes){
-			valores.add( new ValorData(n.getData(),n.getPrecoUltimo()));
+			valores.add( new ValorData(n.getData(),n.getPrecoUltimo().doubleValue()));
 		}	
 		
 		//calcula diferencas de ME21 e ME55 
 		List<ValorData> valoreDaDifeenca=new ArrayList<ValorData>();
-		MediaExponencial me21=new MediaExponencial(21,valores);
-		MediaExponencial me55=new MediaExponencial(55,valores);
 		
-		BigDecimal bd1=null,bd2=null,dif=null;
+		MediaExponencial meCP=new MediaExponencial(12,valores);
+		//meCP.exibirMedias();
+		
+		MediaExponencial meLP=new MediaExponencial(26,valores);
+		//meLP.exibirMedias();
+		
+		
+		//calcula diferença entre medias
+		double bd1=0,bd2=0,dif=0;
 				
 		for(Date dt:DataDeNegociacaoFactory.getDatasDeNegociacao()){
-			if(me21.buscaMediaNaData(dt)!=null && me55.buscaMediaNaData(dt)!=null){
-				bd1=me21.buscaMediaNaData(dt).getValor();
-				bd2=me55.buscaMediaNaData(dt).getValor();
-				dif=bd1.subtract(bd2);
+			if(meCP.buscaMediaNaData(dt)!=null && meLP.buscaMediaNaData(dt)!=null){
+				bd1=meCP.buscaMediaNaData(dt).getValor();
+				bd2=meLP.buscaMediaNaData(dt).getValor();
+				dif=bd1-bd2;
 				valoreDaDifeenca.add(new ValorData(dt,dif));
+				//System.out.println(dt+" ;"+dif);
 			}
-
-			//System.out.println(dt+ ", "  +bd1+ ", "  +bd2+ ", "  +dif +", "  );
 		}
-
-		//calcula ME34 da diferença
-		MediaExponencial me34=new MediaExponencial(34,valoreDaDifeenca);
+				
+		//calcula ME34 da diferença		
+		
+		MediaExponencial me34=new MediaExponencial(9,valoreDaDifeenca);
 		me34.exibirMedias();
 	}
 }

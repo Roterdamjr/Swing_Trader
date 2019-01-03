@@ -10,16 +10,25 @@ import dao.NegociacaoDao;
 public class ValorData {
 
 	private Date dataReferencia;
-	private BigDecimal valor;
+	private double valor;
 	
-	public ValorData(Date dataReferencia, BigDecimal valor) {
+	public ValorData(Date dataReferencia, double valor) {
 		super();
 		this.dataReferencia = dataReferencia;
 		this.valor = valor;
 	}	
 	
 	public int comparar(ValorData mp){
-		return  valor.compareTo(mp.getValor());
+		int ret=0;
+		
+		if(valor>mp.getValor())
+			ret= 1;
+		if(valor==mp.getValor())
+			ret= 0;
+		if(valor<mp.getValor())
+			ret= -1;
+		
+		return ret;
 				
 	}
 	
@@ -33,10 +42,10 @@ public class ValorData {
 	public void setDataReferencia(Date dataReferencia) {
 		this.dataReferencia = dataReferencia;
 	}
-	public BigDecimal getValor() {
+	public double getValor() {
 		return valor;
 	}
-	public void setValor(BigDecimal valor) {
+	public void setValor(double valor) {
 		this.valor = valor;
 	}
 

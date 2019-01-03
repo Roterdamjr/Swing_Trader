@@ -1,6 +1,6 @@
 package modelo;
 
-
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -8,13 +8,13 @@ import java.util.List;
 
 import dao.NegociacaoDao;
 
-public class MediaExponencial {
+public class CopyOfMediaExponencial {
 
 	int periodo;	
 	List<ValorData> medias;
 	List<ValorData> valores;
 	
-	public MediaExponencial (int periodo,List<ValorData> vals) {
+	public CopyOfMediaExponencial (int periodo,List<ValorData> vals) {
 		super();
 		this.periodo = periodo;		
 		this.valores=vals;
@@ -32,18 +32,18 @@ public class MediaExponencial {
 		    }
 		});
 		
-		double total=(0),valor=0,valorAnterior=0;
+		BigDecimal total=new BigDecimal(0),valor=null,valorAnterior=null;
 		int i=1;		
-		double k= (2.0/(periodo+1));
+		BigDecimal k= BigDecimal.valueOf(2.0/(periodo+1));
 		
 		for(ValorData valorData:valores){			
 			if(i<=periodo){
-				total+=valorData.getValor();
+				total=total.add(valorData.getValor());
 			}
 			
 			if(i==periodo){				
 				//busco a media inicial:  entre o primeiro preço existente e o preço-base
-				valor=total/periodo;
+				valor=total.divide(new BigDecimal(periodo),2);
 				ValorData me= new ValorData(valorData.getDataReferencia(),valor);
 				medias.add(me);
 				valorAnterior=valor;
@@ -51,9 +51,10 @@ public class MediaExponencial {
 			
 			if(i>periodo){	
 				valor=valorData.getValor();
-				valor-=valorAnterior;
-				valor*=k;
-				valor+=valorAnterior;		
+				valor=valor.subtract(valorAnterior);
+				valor=valor.multiply(k);
+				valor=valor.setScale(2, BigDecimal.ROUND_DOWN);
+				valor=valor.add(valorAnterior);		
 				ValorData me= new ValorData(valorData.getDataReferencia(),valor);
 				medias.add(me);
 				valorAnterior=valor;
