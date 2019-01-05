@@ -9,10 +9,11 @@ import modelo.Acao;
 import modelo.DataDeNegociacaoFactory;
 import modelo.MediaExponencial;
 import modelo.Negociacao;
+import modelo.Semana;
 import modelo.ValorData;
 import dao.NegociacaoDao;
 
-public class service {
+public class Service {
 
 	public void difusorFluxo(Acao acao){
 		/*
@@ -33,14 +34,11 @@ public class service {
 		//calcula diferencas de ME21 e ME55 
 		List<ValorData> valoreDaDifeenca=new ArrayList<ValorData>();
 		
-		MediaExponencial meCP=new MediaExponencial(12,valores);
-		//meCP.exibirMedias();
-		
-		MediaExponencial meLP=new MediaExponencial(26,valores);
+		MediaExponencial meCP=new MediaExponencial(21,valores);		
+		MediaExponencial meLP=new MediaExponencial(55,valores);
 		//meLP.exibirMedias();
 		
-		
-		//calcula diferença entre medias
+		//calcula MACD
 		double bd1=0,bd2=0,dif=0;
 				
 		for(Date dt:DataDeNegociacaoFactory.getDatasDeNegociacao()){
@@ -53,9 +51,16 @@ public class service {
 			}
 		}
 				
-		//calcula ME34 da diferença		
-		
-		MediaExponencial me34=new MediaExponencial(9,valoreDaDifeenca);
-		me34.exibirMedias();
+		//calcula sinais de curto prazo				
+		MediaExponencial sinalCP=new MediaExponencial(34,valoreDaDifeenca);			
+		MediaExponencial sinalLP=new MediaExponencial(89,valoreDaDifeenca);
+				
+		sinalCP.exibirMedias();
+		//sinalLP.exibirMedias();
+	}
+	
+	public void analiseSemanal(){
+		 ArrayList<Semana> lista=Negociacao.buscaDatasSemanal();
+		 
 	}
 }

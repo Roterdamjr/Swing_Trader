@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import utilitarios.Utilitario;
 import dao.NegociacaoDao;
 
 public class Negociacao {
@@ -88,6 +89,45 @@ public class Negociacao {
 		    }
 		});
 	}	
+	
+	public static ArrayList<Semana> buscaDatasSemanal(){
+
+		/*
+		 * retorna datas de negociacao semanal		
+		*/
+		
+		ArrayList<Semana> lista=new ArrayList<Semana> ();
+		//loop para buscar cada domingo
+		Date dataLimite=new Date();//data corrente					
+		
+		for(Date dt = Utilitario.converteStringParaDate("04/01/2015"); 
+				dt.before(dataLimite);
+				dt=Utilitario.adicionaDiasEmDate(dt, 7)){
+			
+			Date primeiraData=null,ultimaData=null;
+			boolean achou=false;
+			for(Date dn:DataDeNegociacaoFactory.getDatasDeNegociacao()){
+				if(dn.after(dt)){
+					if(!achou){
+						achou=true;
+						primeiraData=dn;
+					}
+					
+					if(dn.after(Utilitario.adicionaDiasEmDate(dt, 6))){
+						break;
+					};
+					ultimaData=dn;
+				}								
+			}
+			if(primeiraData!=null){
+				lista.add(new Semana(primeiraData, ultimaData));
+				//System.out.println(primeiraData+ "; " +ultimaData);
+			}
+		}
+		
+		return lista;
+	}
+	
 	
 	public Date getData() {
 		return data;
