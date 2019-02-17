@@ -17,26 +17,20 @@ public class NegociacaoDao extends DaoBase{
 
 	public static void main(String[] args) {
 		try {
-			List<Negociacao> negociacoesDaAcao=new NegociacaoDao().buscaNegociacaoPorAcao(new Acao("ITUB4",null));
+			Negociacao negociacao=new NegociacaoDao().buscaNegociacaoPorAcaoPorDia(new Acao("PETR4"),
+					Utilitario.converteStringParaDate("05/01/2015"));
 			
-			//ordena a lista por data
-			negociacoesDaAcao.sort(new Comparator<Negociacao>() {
-			    @Override
-			    public int compare(Negociacao o1, Negociacao o2) {
-			        return o1.getData().compareTo(o2.getData());
-			    }
-			});
 			
-			for(Negociacao negociacao:negociacoesDaAcao){			
+			
 				System.out.println(negociacao.getData()+ " - "+ negociacao.getPrecoUltimo());
-			}
+
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public ArrayList<Negociacao> buscaNegociacaoPorAcao(Acao acao ) throws Exception{
+	public ArrayList<Negociacao> buscaNegociacaoPorAcao(Acao acao) throws Exception{
 		
 		ArrayList<Negociacao> negociacoesDaAcao= new ArrayList<Negociacao>();		
 		
@@ -75,6 +69,41 @@ public class NegociacaoDao extends DaoBase{
 	    return negociacoesDaAcao;	    
 	}
 	
+	public Negociacao buscaNegociacaoPorAcaoPorDia(Acao acao,Date dataNegociacao) throws Exception{	
+		Negociacao negociacao=null;
+	    try {						
+			String query=Utilitario.lerTextoDeArquivo(Utilitario.pathCorrente+"queries/consultaNegociacaoPorAcaoPorDia.sql");	   
+
+			PreparedStatement  stmt = connection.prepareStatement(query);
+		    stmt.setString(1,acao.getCodigoNegociacao());
+		    stmt.setString(2,Utilitario.converteDateParaString(dataNegociacao));
+		    rs=stmt.executeQuery();
+		    
+		    while (rs.next()) {
+		    	negociacao= new Negociacao(rs.getDate(1), 
+		    										rs.getBigDecimal(2),
+		    										rs.getBigDecimal(3),
+		    										rs.getBigDecimal(4),
+		    										rs.getBigDecimal(5),
+		    										rs.getBigDecimal(6),
+		    										null
+		    			);		    		    	
+		    }
+
+		} catch (SQLException e) {  //Erro no Select			
+			e.printStackTrace();
+			throw new Exception();
+/*		}finally{ 
+			if (stmt != null) {
+				stmt.close();
+			}
+			if (connection != null) {
+				connection.close();
+			}*/
+		}	    
+	    return negociacao;	
+		
+	}
 	
 	public ArrayList<Date> buscaDatasaDeNegociacao() throws Exception{
 		
@@ -94,13 +123,13 @@ public class NegociacaoDao extends DaoBase{
 			
 			e.printStackTrace();
 			throw new Exception();
-		}finally{ 
+	/*	}finally{ 
 			if (stmt != null) {
 				stmt.close();
 			}
 			if (connection != null) {
 				connection.close();
-			}
+			}*/
 		}
 	    
 	    return datasDeNegociacoes;

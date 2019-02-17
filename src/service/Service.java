@@ -62,5 +62,25 @@ public class Service {
 	public void analiseSemanal(){
 		 ArrayList<Semana> lista=Negociacao.buscaDatasSemanal();
 		 
+		 //busca valores semanais
+		 List<ValorData> valores=new ArrayList<ValorData>();
+		 NegociacaoDao dao=new NegociacaoDao();
+		 
+		 
+		 
+		 for(Semana semana:lista){
+			 Negociacao negociacao=null;
+			 try {
+				 negociacao=dao.buscaNegociacaoPorAcaoPorDia(new Acao("PETR4"), semana.getDataInicial());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			 
+			 valores.add( new ValorData(negociacao.getData(),negociacao.getPrecoUltimo().doubleValue()));
+		 }
+		 
+		 //calcula ME
+		 MediaExponencial me=new MediaExponencial(72, valores);	
+		 me.exibirMedias();
 	}
 }

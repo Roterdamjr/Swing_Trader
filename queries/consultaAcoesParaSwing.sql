@@ -1,0 +1,1 @@
+select codneg from ativos_swing order by 1

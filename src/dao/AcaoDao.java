@@ -30,15 +30,48 @@ public class AcaoDao extends DaoBase{
 			e.printStackTrace();
 			throw new Exception();
 		}finally{ 
-			if (stmt != null) {
+/*			if (stmt != null) {
 				stmt.close();
 			}
 			if (connection != null) {
 				connection.close();
-			}
+			}*/
 		}
 	    
 	    return acoes;
 	    
 	}
+	
+	public void insereAcaoNoBanco()  throws Exception{
+
+			PreparedStatement stmt ;
+			stmt= connection.prepareStatement("delete from tb_acao");
+			stmt.execute();
+
+			ArrayList<Acao> lista = buscaTodasAcoes();
+			for(Acao acao:lista){
+				//String query=Utilitario.lerTextoDeArquivo(Utilitario.pathCorrente+"queries/insereAcoes.sql");	
+				stmt= connection.prepareStatement("insert into tb_acao values(?,'N')");
+				stmt.setString(1, acao.getCodigoNegociacao());
+				stmt.execute();
+
+				if (stmt != null) {
+					stmt.close();
+				}
+			}
+			
+			stmt= connection.prepareStatement("select codneg from tb_swing_trade");
+		    rs=stmt.executeQuery();
+		    
+		    while (rs.next()) {
+		    	stmt= connection.prepareStatement("update tb_acao set in_swing_trade='S' where codneg=?");
+		    	stmt.setString(1,rs.getString(1));
+		    	stmt.execute();
+		    }
+		
+		 
+
+		
+	}
+
 }
