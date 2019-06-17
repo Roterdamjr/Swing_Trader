@@ -30,12 +30,9 @@ public class AcaoDao extends DaoBase{
 			e.printStackTrace();
 			throw new Exception();
 		}finally{ 
-/*			if (stmt != null) {
+			if (stmt != null) {
 				stmt.close();
 			}
-			if (connection != null) {
-				connection.close();
-			}*/
 		}
 	    
 	    return acoes;
@@ -67,11 +64,34 @@ public class AcaoDao extends DaoBase{
 		    	stmt= connection.prepareStatement("update tb_acao set in_swing_trade='S' where codneg=?");
 		    	stmt.setString(1,rs.getString(1));
 		    	stmt.execute();
-		    }
+		    }		
 		
-		 
+	}
+	
+	public ArrayList<Acao> buscaAcoesComLiquidez() throws Exception{
+		ArrayList<Acao> acoes= new ArrayList<Acao>();		
+		
+	    try {						
+			String query="select codneg from tb_acao where in_swing_trade ='S'";	   
 
-		
+			PreparedStatement  stmt = connection.prepareStatement(query);
+		    rs=stmt.executeQuery();
+		    
+		    while (rs.next()) {
+		    	Acao acao=new Acao(rs.getString(1));
+		    	acoes.add(acao);
+		    }
+
+		} catch (SQLException e) {  //Erro no Select			
+			e.printStackTrace();
+			throw new Exception();
+		}finally{ 
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+	    
+	    return acoes;
 	}
 
 }

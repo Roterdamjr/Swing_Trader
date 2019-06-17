@@ -25,7 +25,7 @@ public class FabricaDeConexao {
 		
 		try{
 			/*@TESTE CASA*/
-			return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"sae_dsv","itauna");
+			return DriverManager.getConnection("jdbc:oracle:thin:@//localhost:1521/xe",	"sae_dsv","sae_dsv");
 			//return DriverManager.getConnection("jdbc:oracle:thin:@//10.1.38.145:1521/xe",					"sae_dsv","itauna");
 			/*@TESTE PRODUCAO*/
 			//

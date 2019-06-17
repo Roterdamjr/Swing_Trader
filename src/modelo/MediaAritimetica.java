@@ -41,7 +41,7 @@ public class MediaAritimetica {
 		}
 	}
 	
-	public BigDecimal buscaValor(){
+	public double buscaValor(){
 		/*
 		 Calcula a média de determinado tipo (arimtmetica ou exponencial 
 		em determinada data. Esse parâmtetros são passado no construtor
@@ -57,7 +57,7 @@ public class MediaAritimetica {
 		Negociacao.ordenarPorDataDecrescente(negociacoesDaAcao);
 		ArrayList<Integer>  lista=new ArrayList<Integer>();
 		
-		BigDecimal soma=new BigDecimal("0.00");
+		double soma=0;
 		int cont=0;
 		boolean achou=false;
 		
@@ -71,7 +71,7 @@ public class MediaAritimetica {
 			
 			if(achou){
 				//System.out.println(negociacao.getData()+ " - "+ negociacao.getPrecoUltimo());
-				soma=soma.add(negociacao.getPrecoUltimo());
+				soma+=negociacao.getPrecoUltimo();
 				cont++;
 				if(cont==periodo){
 					break;
@@ -80,32 +80,23 @@ public class MediaAritimetica {
 			
 		}
 
-		return soma.divide(new BigDecimal(periodo),BigDecimal.ROUND_UP);
+		return soma/periodo;
+		
 	}
 	
 	public boolean isCrescente(){
-
-/*		BigDecimal valor1=new Media(
-				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,4),null
-				).buscaValor();
 		
-		BigDecimal valor2=new Media(
-				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,2),null
-				).buscaValor();
-				
-		BigDecimal valor3=buscaValor();*/
-		
-		BigDecimal valor1=buscaValorComOffset(4);
-		BigDecimal valor2=buscaValorComOffset(2);
-		BigDecimal valor3=buscaValor();
+		double valor1=buscaValorComOffset(4);
+		double valor2=buscaValorComOffset(2);
+		double valor3=buscaValor();
 
-		if(valor1.compareTo(valor2) < 0 && valor2.compareTo(valor3) < 0)
+		if(valor1<valor2 && valor2<valor3)
 			return true;
 		else
 			return false;
 	}
 	
-	public BigDecimal buscaValorComOffset(int offset){
+	public double buscaValorComOffset(int offset){
 		return new MediaAritimetica(
 				acao,periodo,Negociacao.buscaDataAnteriorNegociacao(dataReferencia,offset)
 				).buscaValor();

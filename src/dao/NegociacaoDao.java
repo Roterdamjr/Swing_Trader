@@ -10,7 +10,10 @@ import java.util.List;
 
 import jdbc.DaoBase;
 import modelo.Acao;
+import modelo.MediaExponencial;
 import modelo.Negociacao;
+import modelo.Semana;
+import modelo.ValorData;
 import utilitarios.Utilitario;
 
 public class NegociacaoDao extends DaoBase{
@@ -43,11 +46,11 @@ public class NegociacaoDao extends DaoBase{
 		    
 		    while (rs.next()) {
 		    	Negociacao negociacao= new Negociacao(rs.getDate(1), 
-		    										rs.getBigDecimal(2),
-		    										rs.getBigDecimal(3),
-		    										rs.getBigDecimal(4),
-		    										rs.getBigDecimal(5),
-		    										rs.getBigDecimal(6),
+		    										rs.getDouble(2),
+		    										rs.getDouble(3),
+		    										rs.getDouble(4),
+		    										rs.getDouble(5),
+		    										rs.getDouble(6),
 		    										null
 		    			);		    	
 		    	negociacoesDaAcao.add(negociacao);
@@ -74,18 +77,19 @@ public class NegociacaoDao extends DaoBase{
 	    try {						
 			String query=Utilitario.lerTextoDeArquivo(Utilitario.pathCorrente+"queries/consultaNegociacaoPorAcaoPorDia.sql");	   
 
-			PreparedStatement  stmt = connection.prepareStatement(query);
+			//PreparedStatement  
+			stmt = connection.prepareStatement(query);
 		    stmt.setString(1,acao.getCodigoNegociacao());
 		    stmt.setString(2,Utilitario.converteDateParaString(dataNegociacao));
 		    rs=stmt.executeQuery();
 		    
 		    while (rs.next()) {
 		    	negociacao= new Negociacao(rs.getDate(1), 
-		    										rs.getBigDecimal(2),
-		    										rs.getBigDecimal(3),
-		    										rs.getBigDecimal(4),
-		    										rs.getBigDecimal(5),
-		    										rs.getBigDecimal(6),
+		    										rs.getDouble(2),
+		    										rs.getDouble(3),
+		    										rs.getDouble(4),
+		    										rs.getDouble(5),
+		    										rs.getDouble(6),
 		    										null
 		    			);		    		    	
 		    }
@@ -93,13 +97,14 @@ public class NegociacaoDao extends DaoBase{
 		} catch (SQLException e) {  //Erro no Select			
 			e.printStackTrace();
 			throw new Exception();
-/*		}finally{ 
+		}finally{ 
+			if (rs != null) {
+				rs.close();
+			}
+
 			if (stmt != null) {
 				stmt.close();
 			}
-			if (connection != null) {
-				connection.close();
-			}*/
 		}	    
 	    return negociacao;	
 		
@@ -118,21 +123,55 @@ public class NegociacaoDao extends DaoBase{
 		    while (rs.next()) {
 		    	datasDeNegociacoes.add(rs.getDate(1));
 		    }
-
-		} catch (SQLException e) {  //Erro no Select
-			
+		} catch (SQLException e) {  //Erro no Select			
 			e.printStackTrace();
 			throw new Exception();
-	/*	}finally{ 
+		}finally{ 
+			if (rs != null) {
+				rs.close();
+			}
+			
 			if (stmt != null) {
 				stmt.close();
 			}
-			if (connection != null) {
-				connection.close();
-			}*/
-		}
-	    
+		}	    
 	    return datasDeNegociacoes;
-	    
+	}
+	
+	public void analiseSemanal(ArrayList<Acao> listaComLiquidez){
+			
+		ArrayList<Semana> datasSemanais=Negociacao.buscaDatasSemanal();
+
+		
+		NegociacaoDao negociacaoDao=new NegociacaoDao();
+		
+		for(Acao acao:listaComLiquidez){
+			System.out.println();
+			List<ValorData> valores=new ArrayList<ValorData>();
+			
+			//para cada ação
+			//popula MediaExponencial com dados da acao
+			for(Semana semana:datasSemanais){
+				Negociacao negociacao=null;
+				try {
+					negociacao=negociacaoDao.buscaNegociacaoPorAcaoPorDia(new Acao(acao.getCodigoNegociacao()), 
+							semana.getDataInicial());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
+				valores.add( new ValorData(negociacao.getData(),negociacao.getPrecoUltimo()));
+			}
+	
+			MediaExponencial me=new MediaExponencial(72, valores);	
+			
+			
+			Date dataRef=Utilitario.converteStringParaDate("12/11/2018");
+			//for
+			System.out.println(acao.getCodigoNegociacao()+ "," +
+					me.buscaMediaNaData(Utilitario.converteStringParaDate("12/11/2018")).getValor()
+			);
+			
+			System.exit(0);
+		}
 	}
 }

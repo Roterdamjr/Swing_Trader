@@ -1,26 +1,25 @@
 package modelo;
 
-import java.math.BigDecimal;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import utilitarios.Utilitario;
-import dao.NegociacaoDao;
 
 public class Negociacao {
 	private Date data;
-	private BigDecimal precoAbertura;
-	private BigDecimal precoMaximo;
-	private BigDecimal precoMinimo;
-	private BigDecimal precoUltimo;
-	private BigDecimal volume;
+	private double precoAbertura;
+	private double precoMaximo;
+	private double precoMinimo;
+	private double precoUltimo;
+	private double volume;
 	private Acao acao;
 
 			
-	public Negociacao(Date data, BigDecimal precoAbertura, BigDecimal precoMaximo,
-			BigDecimal precoMinimo, BigDecimal precoUltimo, BigDecimal volume,
+	public Negociacao(Date data, double precoAbertura, double precoMaximo,
+			double precoMinimo, double precoUltimo, double volume,
 			Acao acao) {
 		super();
 		this.data = data;
@@ -31,7 +30,7 @@ public class Negociacao {
 		this.volume = volume;
 		this.acao = acao;				
 	}
-
+	
 	public static ArrayList<Date> buscaDatasDeNegociacao(boolean ordemCrescente) {
 		ArrayList<Date> lista= DataDeNegociacaoFactory.getDatasDeNegociacao();
 		
@@ -100,13 +99,16 @@ public class Negociacao {
 		//loop para buscar cada domingo
 		Date dataLimite=new Date();//data corrente					
 		
-		for(Date dt = Utilitario.converteStringParaDate("04/01/2015"); 
+		ArrayList<Date> datasNegociacao =DataDeNegociacaoFactory.getDatasDeNegociacao();
+		
+		for(Date dt = Utilitario.converteStringParaDate("01/01/2011"); 
 				dt.before(dataLimite);
 				dt=Utilitario.adicionaDiasEmDate(dt, 7)){
 			
 			Date primeiraData=null,ultimaData=null;
 			boolean achou=false;
-			for(Date dn:DataDeNegociacaoFactory.getDatasDeNegociacao()){
+			for(Date dn:datasNegociacao){
+			
 				if(dn.after(dt)){
 					if(!achou){
 						achou=true;
@@ -128,6 +130,9 @@ public class Negociacao {
 		return lista;
 	}
 	
+	public boolean isAlta(){
+		return precoUltimo>precoAbertura;
+	}
 	
 	public Date getData() {
 		return data;
@@ -135,34 +140,34 @@ public class Negociacao {
 	public void setData(Date data) {
 		this.data = data;
 	}
-	public BigDecimal getPrecoAbertura() {
+	public double getPrecoAbertura() {
 		return precoAbertura;
 	}
-	public void setPrecoAbertura(BigDecimal precoAbertura) {
+	public void setPrecoAbertura(double precoAbertura) {
 		this.precoAbertura = precoAbertura;
 	}
-	public BigDecimal getPrecoMaximo() {
+	public double getPrecoMaximo() {
 		return precoMaximo;
 	}
-	public void setPrecoMaximo(BigDecimal precoMaximo) {
+	public void setPrecoMaximo(double precoMaximo) {
 		this.precoMaximo = precoMaximo;
 	}
-	public BigDecimal getPrecoMinimo() {
+	public double getPrecoMinimo() {
 		return precoMinimo;
 	}
-	public void setPrecoMinimo(BigDecimal precoMinimo) {
+	public void setPrecoMinimo(double precoMinimo) {
 		this.precoMinimo = precoMinimo;
 	}
-	public BigDecimal getPrecoUltimo() {
+	public double getPrecoUltimo() {
 		return precoUltimo;
 	}
-	public void setPrecoUltimo(BigDecimal precoUltimo) {
+	public void setPrecoUltimo(double precoUltimo) {
 		this.precoUltimo = precoUltimo;
 	}
-	public BigDecimal getVolume() {
+	public double getVolume() {
 		return volume;
 	}
-	public void setVolume(BigDecimal volume) {
+	public void setVolume(double volume) {
 		this.volume = volume;
 	}
 	public Acao getAcao() {

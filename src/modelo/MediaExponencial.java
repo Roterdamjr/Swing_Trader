@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import utilitarios.Utilitario;
 import dao.NegociacaoDao;
 
 public class MediaExponencial {
@@ -70,11 +71,11 @@ public class MediaExponencial {
 				
 		ordenarPorDataDecrescente();
 		ValorData mp1=buscaMediaNaData(dataReferencia);
-		System.out.println("media: " + mp1);
+		//System.out.println("media: " + mp1);
 		ValorData mp2=buscaMediaNaData(Negociacao.buscaDataAnteriorNegociacao(dataReferencia,2));
-		System.out.println("media: " + mp2);
+		//System.out.println("media: " + mp2);
 		ValorData mp3=buscaMediaNaData(Negociacao.buscaDataAnteriorNegociacao(dataReferencia,4));
-		System.out.println("media: " + mp3);
+		//System.out.println("media: " + mp3);
 
 		if(mp1.comparar(mp2)==1&&mp2.comparar(mp3)==1)
 			return true;
@@ -94,6 +95,20 @@ public class MediaExponencial {
 		}
 		return ret;
 	}
+/*	
+	public ValorData buscaMediaAnteriorAData(Date dataReferencia){
+		//busca a média imediatamente anterior anterior `a data de referência
+		// utilizada em meédia semanal 
+		
+		for(Date d=Utilitario.converteStringParaDate("12/11/2018");
+				!d.equals(Utilitario.converteStringParaDate("10/11/2018"));	
+				d=Utilitario.adicionaDiasEmDate(d,-1)
+				){
+			System.out.println(d);
+		}
+		
+		return null;
+	}*/
 	
 	public void imprimirMedias(){
 		for(ValorData media:medias){			

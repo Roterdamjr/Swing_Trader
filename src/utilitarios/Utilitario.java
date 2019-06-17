@@ -247,6 +247,14 @@ public class Utilitario {
 		}
 	}
 
+	public static double indicePercentagem(int a,int total){
+		/*retorna percentgem de a em realção a total em índice
+		*/
+		
+		return Math.round(100*(double)a/total);
+	}
+	
+	
 }
 
 

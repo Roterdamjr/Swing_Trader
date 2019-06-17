@@ -19,10 +19,10 @@ public class LinhaDao extends DaoBase{
 		
 		System.out.println("Apagando dados de 2018");
 
-		PreparedStatement stmt1= connection.prepareStatement("delete from TB_HIST_COTACOES_final where to_char(data_pregao,'yyyy')=2018");
-		stmt1.execute();
+		//PreparedStatement stmt1= connection.prepareStatement("delete from TB_HIST_COTACOES_final where to_char(data_pregao,'yyyy')=2018");
+		//stmt1.execute();
 		
-		System.out.println("Importando dados de 2018");
+		System.out.println("Importando dados");
 		
 		try {	
 			String query=Utilitario.lerTextoDeArquivo(Utilitario.pathCorrente+"queries/InsereLinhaFinal.sql");			    

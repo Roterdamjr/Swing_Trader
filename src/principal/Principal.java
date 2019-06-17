@@ -2,12 +2,16 @@ package principal;
 
 import java.util.ArrayList;
 
+import service.DifusorFluxoService;
 import modelo.Acao;
 import dao.AcaoDao;
 
 public class Principal {
 	public static void main(String[] args) {
-		// Carregar ações
+		/* 
+		popula tb_acao com os ativos lidos da tb_historico_cotacao. 
+		 Informa nessa tabela se o ativo tem liquidez par swing trade conforme lista do Andre Moraes
+		*/ 
 		System.out.println("carregando ações");
 		try {
 			new AcaoDao().insereAcaoNoBanco();	
@@ -17,5 +21,9 @@ public class Principal {
 			e.printStackTrace();
 		}
 		System.out.println("Fim carregando ações");
+		
+		
+		
+		
 	}
 }
